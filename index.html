@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculator</title>
+    <!-- Latest compiled and minified CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
+    <style rel="stylesheet">
+        body {
+            background-image: url("img/numbers-wallpaper.jpg");
+
+
+        }
+        #mainWrapper {
+            margin-top: 10vw;
+            margin-left: 25vw;
+            min-width: 300px;
+            min-height: 400px;
+            width: 40%;
+            background-color: darkgray;
+            border-radius: 2%;
+        }
+       .container {
+           margin-left: 7.5vw;
+       }
+        #titleDiv {
+            margin-bottom: 2%;
+            margin-top: 1vw!important;
+            min-width: 221px;
+            width: 75%;
+            font-size: 3.5vw;
+            font-weight: 500;
+            background-color: whitesmoke;
+            border: groove .03vw lightgrey;
+            box-shadow: 0 0 .02vw .01vw;
+            border-radius: 2%;
+            text-align: center;
+        }
+
+        #buttonDisplay button{
+            width: 5.3vw;
+            height: 5.3vw;
+            min-width: 50px;
+            min-height: 50px;
+            margin-right: .55vw;
+            margin-bottom: .5vw;
+            box-shadow: .05vw .05vw .1vw .1vw #000;
+            background-color: #fff;
+            border-radius: 4%;
+        }
+        #zero {
+            width: 11.5vw!important;
+            min-width: 106.5px!important;
+        }
+        #inputDisplay input {
+            width: 7.5vw;
+            height: 3vw;
+            min-width: 67px;
+            min-height: 30px;
+            font-size: 140%;
+            margin: 0;
+            box-shadow: .05vw .05vw .1vw .1vw #000 !important;
+        }
+        #inputDisplay {
+            display: table;
+            border-collapse: collapse;
+        }
+
+        #errorMessage {
+            background-color: lightcoral;
+            height: 3vw;
+            width: 90%;
+            font-size: 2vw;
+            margin-bottom: 1vw;
+            color: white;
+            display: none;
+        }
+        @media screen and (max-width: 700px){
+            #mainWrapper {
+                margin-left: 0!important;
+            }
+        }
+
+
+
+    </style>
+</head>
+<body>
+<div id="mainWrapper">
+    <div class="container col=xs-12">
+        <div id="titleDiv">
+        Calculate This!
+        </div>
+        <div id="errorMessage"></div>
+        <div id="inputDisplay">
+            <input id="left" type="text">
+            <input id="center" type="text">
+            <input id="right" type="text">
+        </div>
+        <br>
+        <div id = "buttonDisplay">
+
+
+            <button id="clear" class="btn btn-default" type="button">C</button>
+            <button id="posNeg" class="btn btn-default number" type="button">+-</button>
+            <button id="percent" class="btn btn-default" type="button">%</button>
+            <button id="divide" class="btn btn-default operator" type="button">/</button>
+            <br>
+
+            <button id="four" class="btn btn-default number" type="button">4</button>
+            <button id="five" class="btn btn-default number" type="button">5</button>
+            <button id="six" class="btn btn-default number" type="button">6</button>
+            <button id="minus" class="btn btn-default operator" type="button">-</button>
+            <br>
+
+            <button id="seven" class="btn btn-default number" type="button">7</button>
+            <button id="eight" class="btn btn-default number" type="button">8</button>
+            <button id="nine" class="btn btn-default number" type="button">9</button>
+            <button id="multiply" class="btn btn-default operator" type="button">*</button>
+            <br>
+
+            <button id="one" class="btn btn-default number" type="button">1</button>
+            <button id="two" class="btn btn-default number " type="button">2</button>
+            <button id="three" class="btn btn-default number" type="button">3</button>
+            <button id="add" class="btn btn-default operator" type="button">+</button>
+            <br>
+
+            <button id="zero" class="btn btn-default number" type="button">0</button>
+            <button id="decimal" class="btn btn-default number" type="button">.</button>
+            <button id="equals" class="btn btn-default" type="button">=</button>
+
+
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        "use strict";
+        console.log("test");
+        var input1 = document.getElementById("left");
+        var input2 = document.getElementById("center");
+        var input3 = document.getElementById("right");
+
+        var btns = document.getElementsByClassName('number');
+        var trueornot = true;
+        var errorMessage =  document.getElementById("errorMessage");
+        var operator = "";
+        var OKEqualsEquals = false;
+        var equalsEqualsNumber = 0;
+        var hasDecimal = false;
+
+
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].addEventListener("click", function () {
+
+                if (!input2.value) {
+                    if ((parseInt(input1.value) >= 0) && this.innerText == "+-") {
+                        input1.value = "-" + input1.value;
+                    }
+                    else if ((parseInt(input1.value) < 0) && this.innerText == "+-") {
+                        input1.value = (parseFloat(input1.value) * -1);
+                    }
+                    else {
+                        if (!hasDecimal) {
+                            if (this.innerText == ".") {
+                                hasDecimal = true;
+                                input1.value += this.innerText;
+                            }
+                            else {
+                                input1.value += this.innerText;
+                            }
+                        }
+                        else {
+                            if (this.innerText == "."){
+                            }
+                            else {
+                                input1.value += this.innerText;
+                            }
+                        }
+                    }
+                }
+
+                else {
+
+                        if ((parseInt(input3.value) >= 0) && this.innerText == "+-"){
+                            input3.value = "-" + input3.value;
+                        }
+                        else if ((parseInt(input1.value) < 0) && this.innerText == "+-"){
+                            input3.value = (parseFloat(input3.value) * -1);
+                        }
+                        else {
+                            if (!hasDecimal) {
+                                if (this.innerText == ".") {
+                                    hasDecimal = true;
+                                    input3.value += this.innerText;
+                                }
+                                else {
+                                    input3.value += this.innerText;
+                                }
+                            }
+                            else {
+                                if (this.innerText == "."){
+                                }
+                                else {
+                                    input3.value += this.innerText;
+                                }
+                            }
+                        }
+                    }
+
+            });
+        }
+
+
+
+        var clearbtn = document.getElementById("clear");
+        clearbtn.addEventListener("click", function () {
+            errorMessage.style.display = "none";
+            trueornot = true;
+            calcPercent = false;
+            OKEqualsEquals = false;
+            hasDecimal = false;
+            equalsEqualsNumber = 0;
+            operator = "";
+            input1.value = "";
+            input2.value = "";
+            input3.value = "";
+
+        });
+
+        var operBtns = document.getElementsByClassName("operator");
+
+
+        for(var i = 0; i < operBtns.length; i++){
+            operBtns[i].addEventListener("click", function () {
+                input2.value = this.innerText;
+                hasDecimal = false;
+
+            })
+        }
+
+
+        var calcPercent = false;
+        var percentbtn = document.getElementById("percent");
+        percentbtn.addEventListener("click", function () {
+            calcPercent = true;
+        });
+
+
+        var equalsbtn = document.getElementById("equals");
+        equalsbtn.addEventListener("click", function () {
+            var result = 0;
+            var left = parseFloat(input1.value);
+            var right = parseFloat(input3.value);
+            hasDecimal = false;
+
+            errorMessage.style.display = "none";
+
+
+            if ((!input1.value || !input3.value) && OKEqualsEquals === false){
+                errorMessage.innerHTML = "Must Enter digits on left and right";
+                errorMessage.style.display = "inline-block";
+            }
+            else {
+
+                if (!input3.value) {
+
+                    switch (operator) {
+                        case "+":
+                            console.log("plus");
+                            result = left + equalsEqualsNumber;
+                            break;
+                        case "-":
+                            result = left - equalsEqualsNumber;
+                            break;
+                        case "*":
+                            result = left * equalsEqualsNumber;
+                            break;
+                        case "/":
+                            result = left/equalsEqualsNumber;
+                            break;
+                    }
+                }
+                else
+                    {
+                        equalsEqualsNumber = left;
+
+                        if (input2.value == "+") {
+                            calcPercent === false ? result = left + right : result = left + ((right / 100.0) * left);
+                            operator = "+";
+
+                        }
+                        else if (input2.value == "-") {
+                            calcPercent === false ? result = left - right : result = left - ((right / 100.0) * left);
+                            operator = "-";
+                        }
+                        else if (input2.value == "*") {
+                            calcPercent === false ? result = left * right : result = left * (right / 100.0);
+                            operator = "*";
+                        }
+
+                        else if (input2.value == "/") {
+                            if (input3.value == 0 || input1.value == 0) {
+
+                                errorMessage.innerHTML = "You can't divide by zero";
+                                errorMessage.style.display = "inline-block";
+                            }
+                            else {
+                                calcPercent === false ? result = left / right : result = left / (right / 100.0);
+                                operator = "*";
+                            }
+                        }
+
+                        else {
+                        }
+
+                    }
+                }
+
+            calcPercent = false;
+            OKEqualsEquals = true;
+            input1.value = result;
+            input2.value = null;
+            input3.value = null;
+        });
+
+
+
+    })();
+
+</script>
+</body>
+
+</html>
